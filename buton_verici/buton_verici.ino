@@ -1,33 +1,33 @@
+  
 #include <SPI.h>                      
 #include "RF24.h"   
 int msg[1];
-RF24 radio(9,10); 
-const uint64_t pipe = 0xE8E8F0F0E1LL;
+RF24 radio(8,10); 
+const uint64_t pipe = 3535;
 
 void setup() {
+  Serial.begin(9600);
   pinMode(7,INPUT);
   radio.begin();
   radio.openWritingPipe(pipe);
+  radio.stopListening();
   
 
 }
 
 void loop() {
   msg[0] = digitalRead(7);
-  radio.write(msg,1);
+  Serial.println(msg[0]);
   
-  if(digitalRead(7) == 1 ) 
+  radio.write(msg,1);
+  if(radio.available()  ) 
   {
-    digitalWrite(6, HIGH);
-    
+    Serial.println("sinyal gönderiyor");
   }
-  else
+ /* else
   {
-    digitalWrite(6, HIGH);
-    delay(750);
-    digitalWrite(6, LOW);
-    delay(750);
-  }
-
+    Serial.println("sinyal yok");
+    delay(1000);
+  } */
 
 }
